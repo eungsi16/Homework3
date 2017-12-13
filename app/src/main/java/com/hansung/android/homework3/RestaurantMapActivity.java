@@ -1,12 +1,14 @@
 package com.hansung.android.homework3;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +27,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -76,8 +80,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 
                     mgoogleMap.addMarker(
                             new MarkerOptions().
-                                    position(location).
-                                    title(ed)
+                                    position(location)
                     );
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
                 }
@@ -149,14 +152,9 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
                     mLastLocation = location;
-                    LatLng Llocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                    LatLng Location = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-                    mgoogleMap.addMarker(
-                            new MarkerOptions().
-                                    position(Llocation).
-                                    title("현재위치")
-                    );
-                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Llocation,15));
+                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location,15));
 
                     //updateUI();
                 } else
@@ -168,6 +166,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mgoogleMap = googleMap;
+
+        mgoogleMap.setOnMarkerClickListener(new MyMarkerClickListener());
     }
 
     private void getAddress() {
@@ -187,5 +187,52 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
             return;
         }
     }
+
+    private void showDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // 제목셋팅
+        alertDialogBuilder.setTitle("맛집 등록");
+
+        // AlertDialog 셋팅
+        alertDialogBuilder
+                .setMessage("새로운 맛집을 등록하시겠습니까?")
+                .setCancelable(false)
+                .setPositiveButton("예",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(
+                                    DialogInterface dialog, int id) {
+                                Intent intent = new Intent(getApplicationContext(), RestaurantRegistrationActivity.class);
+                                intent.putExtra("address", ed);
+                                intent.putExtra("latitude", address.getLatitude());
+                                intent.putExtra("longitude", address.getLongitude());
+                                startActivity(intent);
+                            }
+                        })
+                .setNegativeButton("아니오",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(
+                                    DialogInterface dialog, int id) {
+                                // 다이얼로그를 취소한다
+                                dialog.cancel();
+                            }
+                        });
+
+        //다이얼로그 보여주기
+        alertDialogBuilder.show();
+
+        // 출처: http://mainia.tistory.com/2017 [녹두장군 - 상상을 현실로]
+    }
+
+    class MyMarkerClickListener implements GoogleMap.OnMarkerClickListener {
+
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+                showDialog();
+                return false;
+        }
+    }
+
 
 }

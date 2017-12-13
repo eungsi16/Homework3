@@ -28,6 +28,7 @@ public class MenuDetailActivity extends AppCompatActivity {
     static String mPrice;
     static String mEx;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
