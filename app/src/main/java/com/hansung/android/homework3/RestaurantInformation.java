@@ -47,4 +47,18 @@ public class RestaurantInformation {
                 KEY_IMAGE + TEXT_TYPE + " )";
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
+
+    public static class Locations implements BaseColumns {
+        public static final String TABLE_NAME = "Locations";
+        public static final String KEY_NAME = "Name";
+        public static final String KEY_LATITUDE = "Latitude";
+        public static final String KEY_LONGITUDE = "Longitude";
+
+        public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
+                _ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
+                KEY_NAME + TEXT_TYPE + COMMA_SEP +
+                KEY_LATITUDE + TEXT_TYPE + COMMA_SEP +
+                KEY_LONGITUDE + TEXT_TYPE + " )";
+        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    }
 }

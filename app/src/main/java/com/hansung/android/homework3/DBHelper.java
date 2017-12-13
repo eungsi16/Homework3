@@ -23,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i(TAG, getClass().getName() + ".onCreate()");
         db.execSQL(RestaurantInformation.Restaurants.CREATE_TABLE);
         db.execSQL(RestaurantInformation.Menu.CREATE_TABLE);
-
+        db.execSQL(RestaurantInformation.Locations.CREATE_TABLE);
     }
 
     @Override
@@ -31,6 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i(TAG, getClass().getName() + ".onUpgrade()");
         db.execSQL(RestaurantInformation.Restaurants.DELETE_TABLE);
         db.execSQL(RestaurantInformation.Menu.DELETE_TABLE);
+        db.execSQL(RestaurantInformation.Locations.DELETE_TABLE);
         onCreate(db);
     }
 
@@ -56,6 +57,16 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(RestaurantInformation.Menu.TABLE_NAME, null, values);
     }
 
+    public long insertLocationByMethod(String name, String latitude, String longitude) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(RestaurantInformation.Locations.KEY_NAME, name);
+        values.put(RestaurantInformation.Locations.KEY_LATITUDE, latitude);
+        values.put(RestaurantInformation.Locations.KEY_LONGITUDE, longitude);
+
+        return db.insert(RestaurantInformation.Locations.TABLE_NAME, null, values);
+    }
+
     public Cursor getAllUsersBySQL() {
         String sql = "Select * FROM " + RestaurantInformation.Restaurants.TABLE_NAME;
         return getReadableDatabase().rawQuery(sql, null);
@@ -63,6 +74,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getAllMenusBySQL() {
         String sql = "Select * FROM " + RestaurantInformation.Menu.TABLE_NAME;
+        return getReadableDatabase().rawQuery(sql, null);
+    }
+
+    public Cursor getAllLocationsBySQL() {
+        String sql = "Select * FROM " + RestaurantInformation.Locations.TABLE_NAME;
         return getReadableDatabase().rawQuery(sql, null);
     }
 }
