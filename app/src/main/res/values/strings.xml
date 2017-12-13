@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">한성 맛집 앱</string>
+    <string name="restaurant_name">학생식당</string>
+    <string name="restaurant_address">서울 성북구 삼선동 2가 389</string>
+    <string name="restaurant_time">오전 10시 30분 ~ 오후 7시</string>
+    <string name="restaurant_number">02-760-4499</string>
+</resources>
