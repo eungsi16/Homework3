@@ -1,6 +1,7 @@
 package com.hansung.android.homework3;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,6 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +33,8 @@ import com.google.android.gms.tasks.Task;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import static com.hansung.android.homework3.R.layout.item;
 
 public class RestaurantMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -77,6 +83,25 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 }
             }
         });
+
+
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.map_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    //메뉴아이템 클릭 시, MenuRegistrationActivity 불려짐
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nlocation:
+                getLastLocation();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private boolean checkLocationPermissions() {
@@ -125,6 +150,12 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 if (location != null) {
                     mLastLocation = location;
                     LatLng Llocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+                    mgoogleMap.addMarker(
+                            new MarkerOptions().
+                                    position(Llocation).
+                                    title("현재위치")
+                    );
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Llocation,15));
 
                     //updateUI();
