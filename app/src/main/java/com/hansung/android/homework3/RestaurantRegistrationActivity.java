@@ -36,16 +36,22 @@ import java.util.Date;
 public class RestaurantRegistrationActivity extends AppCompatActivity {
 
     private DBHelper mDbHelper;
-
+    EditText address;
+    EditText name;
+    Intent mapIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_registration);
 
         mDbHelper = new DBHelper(this);
+        address = (EditText) findViewById(R.id.retaurantAddress);
+        name = (EditText) findViewById(R.id.restaurantName);
 
         checkDangerousPermissions();
 
+        mapIntent = getIntent();
+        address.setText(mapIntent.getStringExtra("address"));
         ImageButton restaurantPictureBtn = (ImageButton) findViewById(R.id.restaurantPictureBtn);
         restaurantPictureBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -63,6 +69,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RestaurantDetailActivity.class);
                 insertRecord();
+                insertLocationRecord();
                 startActivity(intent);
             }
         });
@@ -92,12 +99,19 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
 
     //식당의 이름, 주소, 전화번호를 데이터베이스에 추가
     private void insertRecord() {
-        EditText name = (EditText) findViewById(R.id.restaurantName);
-        EditText address = (EditText) findViewById(R.id.retaurantAddress);
         EditText phone = (EditText) findViewById(R.id.resraurantContact);
 
         mDbHelper.insertUserByMethod(name.getText().toString(), address.getText().toString(), phone.getText().toString(), mPhotoFileName);
     }
+
+    //식당의 이름과 위치정보를 데이터베이스에 추가
+    private void insertLocationRecord() {
+        String longitude = mapIntent.getStringExtra("longitude");
+        String latitude = mapIntent.getStringExtra("latitude");
+
+        mDbHelper.insertLocationByMethod(name.getText().toString(), longitude, latitude);
+    }
+
 
     private String currentDateFormat() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss");

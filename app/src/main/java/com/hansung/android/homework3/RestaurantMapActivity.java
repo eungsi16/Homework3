@@ -168,6 +168,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         mgoogleMap = googleMap;
 
         mgoogleMap.setOnMarkerClickListener(new MyMarkerClickListener());
+
+
     }
 
     private void getAddress() {
