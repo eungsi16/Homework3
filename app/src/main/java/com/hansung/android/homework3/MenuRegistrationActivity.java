@@ -57,7 +57,7 @@ public class MenuRegistrationActivity extends AppCompatActivity {
                 insertmenuRecord();
                 setMenuInformation();
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
     }
