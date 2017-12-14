@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -83,6 +84,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                                     position(location)
                     );
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+
                 }
             }
         });
@@ -226,15 +228,35 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 
         // 출처: http://mainia.tistory.com/2017 [녹두장군 - 상상을 현실로]
     }
+    private DBHelper mDBHelper;
 
     class MyMarkerClickListener implements GoogleMap.OnMarkerClickListener {
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-                showDialog();
+            Cursor cursor = mDBHelper.getAllLocationsBySQL();
+
+            double rlatitude;
+            double rIongitude;
+
+            while (cursor.moveToNext()) {
+
+                rlatitude = cursor.getDouble(2);
+                rIongitude = cursor.getDouble(3);
+
+                if (marker.getPosition().latitude==rlatitude && marker.getPosition().longitude == rIongitude) {
+
+                    startActivity(new Intent(getApplicationContext(), RestaurantDetailActivity.class));
+                    break;
+                }
+            }
+
+            showDialog();
+
                 return false;
         }
     }
+
 
 
 }
