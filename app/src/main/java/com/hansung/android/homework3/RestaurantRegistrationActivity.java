@@ -110,7 +110,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         String longitude = mapIntent.getStringExtra("longitude");
         String latitude = mapIntent.getStringExtra("latitude");
 
-        mDbHelper.insertLocationByMethod(name.getText().toString(), longitude, latitude);
+        mDbHelper.insertLocationByMethod(name.getText().toString(), latitude, longitude);
     }
 
 

@@ -260,7 +260,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-//            Cursor cursor = mDBHelper.getAllLocationsBySQL();
+           //Cursor cursor = mDBHelper.getAllLocationsBySQL();
 //
 //            double rlatitude;
 //            double rIongitude;

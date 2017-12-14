@@ -66,16 +66,16 @@ public class MyAdapter extends BaseAdapter {
             convertView = inflater.inflate(mResource, parent, false);
         }
 
-        //스마트폰 오류로 인해 잠시 주석처리
-
-        // Set Icon
-//        ImageView icon = (ImageView) convertView.findViewById(R.id.iconItem);
-//        if (mItems.get(position).menuIcon != null) {
-//            File mPhotoFile = new File(mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES), mItems.get(position).menuIcon);
-//            Uri uri = Uri.fromFile(mPhotoFile);
-//            Uri image_uri = Uri.parse(uri.toString());
-//            icon.setImageURI(image_uri);
-//        }
+//        스마트폰 오류로 인해 잠시 주석처리
+//
+//         Set Icon
+        ImageView icon = (ImageView) convertView.findViewById(R.id.iconItem);
+        if (mItems.get(position).menuIcon != null) {
+            File mPhotoFile = new File(mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES), mItems.get(position).menuIcon);
+            Uri uri = Uri.fromFile(mPhotoFile);
+            Uri image_uri = Uri.parse(uri.toString());
+            icon.setImageURI(image_uri);
+        }
         // Set Text 01
         TextView name = convertView.findViewById(R.id.menuname);
         name.setText(mItems.get(position).menuName);
