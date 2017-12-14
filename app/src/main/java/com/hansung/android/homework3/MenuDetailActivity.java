@@ -21,14 +21,14 @@ import java.io.File;
 //안드로이드 6주차 강의자료를 활용하였습니다.
 
 public class MenuDetailActivity extends AppCompatActivity {
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+   // @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
     static String mImage;
     static String mName;
     static String mPrice;
     static String mEx;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+   // @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -6,7 +6,7 @@
 
     <fragment
         android:name="com.hansung.android.homework3.RestaurantDetailFragment"
-        android:id="@+id/restaurantFragment"
+        android:id="@+id/titles"
         android:layout_weight="1"
         android:layout_width="0px"
         android:layout_height="match_parent" />

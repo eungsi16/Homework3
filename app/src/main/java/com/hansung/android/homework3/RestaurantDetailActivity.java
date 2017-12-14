@@ -5,8 +5,12 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -35,6 +39,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
     static String mName;
     static String mPrice;
     static String mEx;
+    ArrayList<MyItem> data;
 
     //기기가 가로일 때 프래그먼트 설정과 세로일 때 프레그먼트 설정
     public void onTitleSelected(int i) {
@@ -55,14 +60,34 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mDBHelper = new DBHelper(this);
+        data = new ArrayList<MyItem>();
 
         getRestaruntInformation();
+
+
+        getMenuInformation();
+
+       // adapter = new MyAdapter(this, R.layout.item, data);
+
+
+        //Map으로 돌아가는 Up 네비게이션 추가
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            Drawable drawable = getDrawable(R.drawable.ic_keyboard_arrow_left_black_24dp);
+            if (drawable != null) {
+                drawable.setTint(Color.WHITE);
+                actionBar.setHomeAsUpIndicator(drawable);
+            }
+        }
+
 
         //데이터 베이스에서 식당의 번호를 불러와 설정
         //이미지 클릭 시, 다이얼 화면으로 이동
@@ -79,6 +104,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
                 startActivity(implicit_intent);
             }
         });
+
+
 
         //어댑터 연결
         ListView listView = (ListView) findViewById(R.id.listView);
@@ -100,6 +127,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         });
     }
 
+
     //안드로이드 5주차 강의자료를 활용하였습니다.
     //옵션 메뉴 생성
     @Override
@@ -113,7 +141,11 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.plus:
-                startActivity(new Intent(this, MenuRegistrationActivity.class));
+                Intent intent = getIntent();
+                String resName = intent.getStringExtra("resName");
+                Intent menuintent = new Intent(this, MenuRegistrationActivity.class);
+                intent.putExtra("rName", resName);
+                startActivity(menuintent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -149,6 +181,28 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
                 imageView.setImageURI(uri);
             }
         }
+    }
+
+
+    //메뉴 정보를 불러옴
+    public void getMenuInformation() {
+
+        Cursor cursor = mDBHelper.getAllMenusBySQL();
+
+        String menuName;
+        String menuPrice;
+        String menuEx;
+        String image;
+
+        while (cursor.moveToNext()) {
+            menuName = cursor.getString(1);
+            menuPrice = cursor.getString(2);
+            menuEx = cursor.getString(3);
+            image = cursor.getString(4);
+
+            data.add(new MyItem(image, menuName, menuPrice, menuEx));
+        }
+        adapter = new MyAdapter(this, R.layout.item, data);
     }
 }
 

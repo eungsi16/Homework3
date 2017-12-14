@@ -27,7 +27,8 @@
             android:name=".MenuDetailActivity"
             android:parentActivityName=".RestaurantDetailActivity" />
         <activity android:name=".RestaurantRegistrationActivity"></activity>
-        <activity android:name=".RestaurantDetailActivity" />
+        <activity android:name=".RestaurantDetailActivity"
+            android:parentActivityName=".RestaurantMapActivity"/>
         <activity android:name=".MenuRegistrationActivity" />
 
         <provider

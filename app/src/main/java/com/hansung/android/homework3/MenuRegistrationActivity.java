@@ -55,7 +55,7 @@ public class MenuRegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RestaurantDetailActivity.class);
                 insertmenuRecord();
-                setMenuInformation();
+                //setMenuInformation();
                 startActivity(intent);
                 //finish();
             }
@@ -88,8 +88,10 @@ public class MenuRegistrationActivity extends AppCompatActivity {
         EditText name = (EditText) findViewById(R.id.menuName);
         EditText price = (EditText) findViewById(R.id.menuPrice);
         EditText explanation = (EditText) findViewById(R.id.menuExplanation);
+        Intent intent = getIntent();
+        String rName = intent.getStringExtra("resName");
 
-        mDbHelper.insertMenuByMethod(name.getText().toString(), price.getText().toString(), explanation.getText().toString(), mPhotoFileName);
+        mDbHelper.insertMenuByMethod(name.getText().toString(), price.getText().toString(), explanation.getText().toString(), mPhotoFileName, rName);
     }
 
     private String currentDateFormat() {

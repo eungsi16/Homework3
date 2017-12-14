@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 
 public class RestaurantInformation {
 
-    public static final String DB_NAME = "Restaurant.db";
+    public static final String DB_NAME = "Restaurant_TEST.db";
     public static final int DATABASE_VERSION = 1;
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
@@ -38,13 +38,15 @@ public class RestaurantInformation {
         public static final String KEY_Price = "Price";
         public static final String KEY_Explanation = "Explanation";
         public static final String KEY_IMAGE = "Image";
+        public static final String KEY_RESTAURANTNAME = "RestaurantName";
 
         public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
                 KEY_NAME + TEXT_TYPE + COMMA_SEP +
                 KEY_Price + TEXT_TYPE + COMMA_SEP +
                 KEY_Explanation + TEXT_TYPE + COMMA_SEP +
-                KEY_IMAGE + TEXT_TYPE + " )";
+                KEY_IMAGE + TEXT_TYPE + COMMA_SEP +
+                KEY_RESTAURANTNAME + TEXT_TYPE + " )";
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 

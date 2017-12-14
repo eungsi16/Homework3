@@ -1,11 +1,15 @@
 package com.hansung.android.homework3;
 
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 //안드로이드 6주차 강의자료를 활용하였습니다.
 

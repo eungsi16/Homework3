@@ -169,9 +169,35 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mgoogleMap = googleMap;
 
+
+
+
+//        Cursor cursor = mDBHelper.getAllLocationsBySQL();
+//
+//        if(cursor.moveToFirst()) {
+//
+//            double rLatitude;
+//            double rLongitude;
+//            String rName;
+//
+//            while (cursor.moveToNext()) {
+//
+//                rName = cursor.getString(1);
+//                rLatitude = Double.parseDouble(cursor.getString(2));
+//                rLongitude = Double.parseDouble(cursor.getString(3));
+//
+//                LatLng location = new LatLng(rLatitude, rLongitude);
+//
+//                mgoogleMap.addMarker(
+//                        new MarkerOptions().
+//                                position(location).
+//                                title(rName).
+//                                icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_black_24dp))
+//                );
+//            }
+//        }
+
         mgoogleMap.setOnMarkerClickListener(new MyMarkerClickListener());
-
-
     }
 
     private void getAddress() {
@@ -234,22 +260,22 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-            Cursor cursor = mDBHelper.getAllLocationsBySQL();
-
-            double rlatitude;
-            double rIongitude;
-
-            while (cursor.moveToNext()) {
-
-                rlatitude = cursor.getDouble(2);
-                rIongitude = cursor.getDouble(3);
-
-                if (marker.getPosition().latitude==rlatitude && marker.getPosition().longitude == rIongitude) {
-
-                    startActivity(new Intent(getApplicationContext(), RestaurantDetailActivity.class));
-                    break;
-                }
-            }
+//            Cursor cursor = mDBHelper.getAllLocationsBySQL();
+//
+//            double rlatitude;
+//            double rIongitude;
+//
+//            while (cursor.moveToNext()) {
+//
+//                rlatitude = cursor.getDouble(2);
+//                rIongitude = cursor.getDouble(3);
+//
+//                if (marker.getPosition().latitude==rlatitude && marker.getPosition().longitude == rIongitude) {
+//
+//                    startActivity(new Intent(getApplicationContext(), RestaurantDetailActivity.class));
+//                    break;
+//                }
+//            }
 
             showDialog();
 
