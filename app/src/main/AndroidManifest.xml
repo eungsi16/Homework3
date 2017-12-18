@@ -20,15 +20,17 @@
         <activity android:name=".RestaurantMapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MenuDetailActivity"
             android:parentActivityName=".RestaurantDetailActivity" />
-        <activity android:name=".RestaurantRegistrationActivity"></activity>
-        <activity android:name=".RestaurantDetailActivity"
-            android:parentActivityName=".RestaurantMapActivity"/>
+        <activity android:name=".RestaurantRegistrationActivity" />
+        <activity
+            android:name=".RestaurantDetailActivity"
+            android:parentActivityName=".RestaurantMapActivity" />
         <activity android:name=".MenuRegistrationActivity" />
 
         <provider
@@ -41,7 +43,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

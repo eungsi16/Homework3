@@ -49,9 +49,11 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     final private int REQUEST_PERMISSIONS_FOR_LOCATION_UPDATES = 101;
     private Location mLastLocation;
     private GoogleMap mgoogleMap;
+    private DBHelper mDBHelper;
     Address address;
     EditText editText;
     String ed;
+    Cursor cursor;
 
 
     @Override
@@ -62,10 +64,13 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mDBHelper = new DBHelper(this);
+
+        //cursor = mDBHelper.getAllLocationsBySQL();
 
         if (!checkLocationPermissions()) {
             requestLocationPermissions(REQUEST_PERMISSIONS_FOR_LAST_KNOWN_LOCATION);
-        } else{
+        } else {
             getLastLocation();
         }
 
@@ -122,6 +127,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 requestCode    // 사용자 정의 int 상수. 권한 요청 결과를 받을 때
         );
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -144,6 +150,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
             }
         }
     }
+
     @SuppressWarnings("MissingPermission")
     private void getLastLocation() {
         Task task = mFusedLocationClient.getLastLocation();
@@ -156,7 +163,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                     mLastLocation = location;
                     LatLng Location = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location,15));
+                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location, 15));
 
                     //updateUI();
                 } else
@@ -169,33 +176,34 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mgoogleMap = googleMap;
 
+        //Cursor cursor = mDBHelper.getAllLocationsBySQL();
+        cursor = mDBHelper.getAllLocationsBySQL();
+        //맛집이 등록되어 있으면 맛집 커서로 표시
+        if (cursor.moveToFirst()) {
 
+            double rLatitude;
+            double rLongitude;
+            String rName;
 
+            while (cursor.moveToNext()) {
 
-//        Cursor cursor = mDBHelper.getAllLocationsBySQL();
-//
-//        if(cursor.moveToFirst()) {
-//
-//            double rLatitude;
-//            double rLongitude;
-//            String rName;
-//
-//            while (cursor.moveToNext()) {
-//
-//                rName = cursor.getString(1);
+                rName = cursor.getString(1);
 //                rLatitude = Double.parseDouble(cursor.getString(2));
 //                rLongitude = Double.parseDouble(cursor.getString(3));
-//
-//                LatLng location = new LatLng(rLatitude, rLongitude);
-//
-//                mgoogleMap.addMarker(
-//                        new MarkerOptions().
-//                                position(location).
-//                                title(rName).
-//                                icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_black_24dp))
-//                );
-//            }
-//        }
+                rLatitude = cursor.getDouble(2);
+                rLongitude = cursor.getDouble(3);
+
+                LatLng location = new LatLng(rLatitude, rLongitude);
+
+                mgoogleMap.addMarker(
+                        new MarkerOptions().
+                                position(location).
+                                title(rName).
+                                icon(BitmapDescriptorFactory.fromResource(R.drawable.map_mark_iloveimg_resized))
+                );
+            }
+        }
+
 
         mgoogleMap.setOnMarkerClickListener(new MyMarkerClickListener());
     }
@@ -254,13 +262,37 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 
         // 출처: http://mainia.tistory.com/2017 [녹두장군 - 상상을 현실로]
     }
-    private DBHelper mDBHelper;
 
     class MyMarkerClickListener implements GoogleMap.OnMarkerClickListener {
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-           //Cursor cursor = mDBHelper.getAllLocationsBySQL();
+            cursor = mDBHelper.getAllLocationsBySQL();
+            //맛집마커 클릭시
+            if (marker.getTitle() != null) {
+
+                if (cursor.moveToFirst()) {
+
+                    double rlatitude;
+                    double rIongitude;
+
+                    while (cursor.moveToNext()) {
+
+                        rlatitude = cursor.getDouble(2);
+                        rIongitude = cursor.getDouble(3);
+
+                        if (marker.getPosition().latitude == rlatitude && marker.getPosition().longitude == rIongitude) {
+
+                            startActivity(new Intent(getApplicationContext(), RestaurantDetailActivity.class));
+                            break;
+                        }
+                    }
+                }
+            }
+            //기본 마커 클릭시
+            else {
+                showDialog();
+            }
 //
 //            double rlatitude;
 //            double rIongitude;
@@ -277,12 +309,11 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 //                }
 //            }
 
-            showDialog();
+//            showDialog();
 
-                return false;
+            return false;
         }
     }
-
 
 
 }

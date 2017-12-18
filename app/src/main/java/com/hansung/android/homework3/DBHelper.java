@@ -58,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(RestaurantInformation.Menu.TABLE_NAME, null, values);
     }
 
-    public long insertLocationByMethod(String name, String latitude, String longitude) {
+    public long insertLocationByMethod(String name, double latitude, double longitude) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(RestaurantInformation.Locations.KEY_NAME, name);
