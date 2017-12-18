@@ -172,6 +172,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         TextView name = (TextView) findViewById(R.id.name);
         TextView address = (TextView) findViewById(R.id.address);
         TextView phone = (TextView) findViewById(R.id.phone);
+        TextView time = (TextView) findViewById(R.id.time);
         ImageView imageView = (ImageView) findViewById(R.id.picture);
 
         Cursor cursor = mDBHelper.getRestaurantBySQL(resname);
@@ -180,16 +181,19 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         String rAddress;
         String rPhone;
         String rImage;
+        String rTime;
 
         while (cursor.moveToNext()) {
             rName = cursor.getString(1);
             rAddress = cursor.getString(2);
             rPhone = cursor.getString(3);
             rImage = cursor.getString(4);
+            rTime = cursor.getString(5);
 
             name.setText(rName);
             address.setText(rAddress);
             phone.setText(rPhone);
+            time.setText(rTime);
             if (rImage != null) {
                 File mPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), rImage);
                 Uri uri = Uri.fromFile(mPhotoFile);

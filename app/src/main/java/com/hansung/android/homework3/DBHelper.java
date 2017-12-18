@@ -35,13 +35,14 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertUserByMethod(String name, String address, String phone, String image) {
+    public long insertRestaurantByMethod(String name, String address, String phone, String image, String time) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(RestaurantInformation.Restaurants.KEY_NAME, name);
         values.put(RestaurantInformation.Restaurants.KEY_ADDRESS, address);
         values.put(RestaurantInformation.Restaurants.KEY_PHONE, phone);
         values.put(RestaurantInformation.Restaurants.KEY_IMAGE, image);
+        values.put(RestaurantInformation.Restaurants.KEY_TIME, time);
 
         return db.insert(RestaurantInformation.Restaurants.TABLE_NAME, null, values);
     }

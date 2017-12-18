@@ -74,19 +74,6 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        Button testBtn = (Button) findViewById(R.id.testBtn);
-        testBtn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RestaurantDetailActivity.class);
-                intent.putExtra("resName", name.getText().toString());
-                insertRecord();
-                insertLocationRecord();
-                startActivity(intent);
-            }
-        });
     }
 
     final int REQUEST_EXTERNAL_STORAGE_FOR_MULTIMEDIA = 1;
@@ -114,14 +101,13 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
     //식당의 이름, 주소, 전화번호를 데이터베이스에 추가
     private void insertRecord() {
         EditText phone = (EditText) findViewById(R.id.resraurantContact);
+        EditText time = (EditText) findViewById(R.id.resraurantTime);
 
-        mDbHelper.insertUserByMethod(name.getText().toString(), address.getText().toString(), phone.getText().toString(), mPhotoFileName);
+        mDbHelper.insertRestaurantByMethod(name.getText().toString(), address.getText().toString(), phone.getText().toString(), mPhotoFileName, time.getText().toString());
     }
 
     //식당의 이름과 위치정보를 데이터베이스에 추가
     private void insertLocationRecord() {
-//        String longitude = mapIntent.getStringExtra("longitude");
-//        String latitude = mapIntent.getStringExtra("latitude");
 
         double longitude = mapIntent.getDoubleExtra("longitude", 0.);
         double latitude = mapIntent.getDoubleExtra("latitude", 0.);
