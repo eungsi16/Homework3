@@ -80,8 +80,8 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), TestActivity.class);
-                //intent.putExtra("resName", name.getText().toString());
+                Intent intent = new Intent(getApplicationContext(), RestaurantDetailActivity.class);
+                intent.putExtra("resName", name.getText().toString());
                 insertRecord();
                 insertLocationRecord();
                 startActivity(intent);

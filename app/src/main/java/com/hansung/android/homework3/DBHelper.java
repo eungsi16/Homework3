@@ -73,8 +73,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return getReadableDatabase().rawQuery(sql, null);
     }
 
+    public Cursor getRestaurantBySQL(String name) {
+        String sql = "Select * FROM " + RestaurantInformation.Restaurants.TABLE_NAME + " WHERE " + RestaurantInformation.Restaurants.KEY_NAME +  " = " + "'" + name + "'";
+        return getReadableDatabase().rawQuery(sql, null);
+    }
+
     public Cursor getAllMenusBySQL() {
         String sql = "Select * FROM " + RestaurantInformation.Menu.TABLE_NAME;
+        return getReadableDatabase().rawQuery(sql, null);
+    }
+
+    public Cursor getMenuBySQL(String name) {
+        String sql = "Select * FROM " + RestaurantInformation.Menu.TABLE_NAME + " WHERE " + RestaurantInformation.Menu.KEY_RESTAURANTNAME +  " = " + "'" + name + "'";
         return getReadableDatabase().rawQuery(sql, null);
     }
 

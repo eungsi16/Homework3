@@ -66,8 +66,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         mapFragment.getMapAsync(this);
         mDBHelper = new DBHelper(this);
 
-        //cursor = mDBHelper.getAllLocationsBySQL();
-
         if (!checkLocationPermissions()) {
             requestLocationPermissions(REQUEST_PERMISSIONS_FOR_LAST_KNOWN_LOCATION);
         } else {
@@ -176,7 +174,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mgoogleMap = googleMap;
 
-        //Cursor cursor = mDBHelper.getAllLocationsBySQL();
         cursor = mDBHelper.getAllLocationsBySQL();
         //맛집이 등록되어 있으면 맛집 커서로 표시
         if (cursor.moveToFirst()) {
@@ -188,8 +185,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
             while (cursor.moveToNext()) {
 
                 rName = cursor.getString(1);
-//                rLatitude = Double.parseDouble(cursor.getString(2));
-//                rLongitude = Double.parseDouble(cursor.getString(3));
                 rLatitude = cursor.getDouble(2);
                 rLongitude = cursor.getDouble(3);
 
@@ -203,7 +198,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 );
             }
         }
-
 
         mgoogleMap.setOnMarkerClickListener(new MyMarkerClickListener());
     }
@@ -282,8 +276,10 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                         rIongitude = cursor.getDouble(3);
 
                         if (marker.getPosition().latitude == rlatitude && marker.getPosition().longitude == rIongitude) {
-
-                            startActivity(new Intent(getApplicationContext(), RestaurantDetailActivity.class));
+                            String rname = marker.getTitle();
+                            Intent intent = new Intent(getApplicationContext(), RestaurantDetailActivity.class);
+                            intent.putExtra("resName", rname);
+                            startActivity(intent);
                             break;
                         }
                     }
@@ -293,24 +289,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
             else {
                 showDialog();
             }
-//
-//            double rlatitude;
-//            double rIongitude;
-//
-//            while (cursor.moveToNext()) {
-//
-//                rlatitude = cursor.getDouble(2);
-//                rIongitude = cursor.getDouble(3);
-//
-//                if (marker.getPosition().latitude==rlatitude && marker.getPosition().longitude == rIongitude) {
-//
-//                    startActivity(new Intent(getApplicationContext(), RestaurantDetailActivity.class));
-//                    break;
-//                }
-//            }
-
-//            showDialog();
-
             return false;
         }
     }

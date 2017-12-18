@@ -1,6 +1,7 @@
 package com.hansung.android.homework3;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -40,6 +41,10 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
     static String mPrice;
     static String mEx;
     ArrayList<MyItem> data;
+    static Intent nameIntent;
+    static String resname;
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
 
     //기기가 가로일 때 프래그먼트 설정과 세로일 때 프레그먼트 설정
     public void onTitleSelected(int i) {
@@ -69,13 +74,25 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         mDBHelper = new DBHelper(this);
         data = new ArrayList<MyItem>();
 
-        getRestaruntInformation();
+        //출처: http://kimdex.tistory.com/51 [김덱스 - 김덱스의 메모장]
+        pref = getSharedPreferences("save", 0);
 
+        edit = pref.edit();
 
-        getMenuInformation();
+        nameIntent = getIntent();
+        String rname = nameIntent.getStringExtra("resName");
 
-       // adapter = new MyAdapter(this, R.layout.item, data);
+        if (rname != null) {
+            edit.putString("savename", rname);
+            edit.commit();
+        }
 
+        pref = getSharedPreferences("save", 0);
+        resname = pref.getString("savename", "rname");
+
+        getRestaruntInformation(); //레스토랑 정보 블러오기
+
+        getMenuInformation(); //레스토랑 메뉴 불러오기
 
         //Map으로 돌아가는 Up 네비게이션 추가
         ActionBar actionBar = getSupportActionBar();
@@ -104,7 +121,6 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
                 startActivity(implicit_intent);
             }
         });
-
 
 
         //어댑터 연결
@@ -136,16 +152,15 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         inflater.inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     //메뉴아이템 클릭 시, MenuRegistrationActivity 불려짐
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.plus:
-                Intent intent = getIntent();
-                String resName = intent.getStringExtra("resName");
-                Intent menuintent = new Intent(this, MenuRegistrationActivity.class);
-                intent.putExtra("rName", resName);
-                startActivity(menuintent);
+                Intent menuIntent = new Intent(this, MenuRegistrationActivity.class);
+                menuIntent.putExtra("rName", resname);
+                startActivity(menuIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -159,7 +174,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         TextView phone = (TextView) findViewById(R.id.phone);
         ImageView imageView = (ImageView) findViewById(R.id.picture);
 
-        Cursor cursor = mDBHelper.getAllUsersBySQL();
+        Cursor cursor = mDBHelper.getRestaurantBySQL(resname);
 
         String rName;
         String rAddress;
@@ -186,8 +201,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
 
     //메뉴 정보를 불러옴
     public void getMenuInformation() {
-
-        Cursor cursor = mDBHelper.getAllMenusBySQL();
+        Cursor cursor = mDBHelper.getMenuBySQL(resname);
 
         String menuName;
         String menuPrice;

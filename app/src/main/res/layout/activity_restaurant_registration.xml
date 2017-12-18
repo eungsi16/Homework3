@@ -89,10 +89,4 @@
     android:layout_height="wrap_content"
     android:text="맛집 등록" />
 
-    <Button
-        android:id="@+id/testBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="테스트" />
-
 </LinearLayout>

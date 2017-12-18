@@ -66,8 +66,7 @@ public class MyAdapter extends BaseAdapter {
             convertView = inflater.inflate(mResource, parent, false);
         }
 
-//        스마트폰 오류로 인해 잠시 주석처리
-//
+
 //         Set Icon
         ImageView icon = (ImageView) convertView.findViewById(R.id.iconItem);
         if (mItems.get(position).menuIcon != null) {

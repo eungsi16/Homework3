@@ -30,11 +30,17 @@ import java.util.Date;
 public class MenuRegistrationActivity extends AppCompatActivity {
 
     private DBHelper mDbHelper;
+    Intent nameIntent;
+    String rName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_registration);
+
+        nameIntent = getIntent();
+
+        rName = nameIntent.getStringExtra("rName");
 
         mDbHelper = new DBHelper(this);
 
@@ -54,42 +60,17 @@ public class MenuRegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RestaurantDetailActivity.class);
+                intent.putExtra("resName", rName);
                 insertmenuRecord();
-                //setMenuInformation();
                 startActivity(intent);
-                //finish();
             }
         });
-    }
-
-    public void setMenuInformation() {
-
-        Cursor cursor = mDbHelper.getAllMenusBySQL();
-
-        String menuName;
-        String menuPrice;
-        String menuEx;
-        String image;
-
-        ArrayList<MyItem> data = new ArrayList<MyItem>();
-
-        while (cursor.moveToNext()) {
-            menuName = cursor.getString(1);
-            menuPrice = cursor.getString(2);
-            menuEx = cursor.getString(3);
-            image = cursor.getString(4);
-
-            data.add(new MyItem(image, menuName, menuPrice, menuEx));
-        }
-        RestaurantDetailActivity.adapter = new MyAdapter(this, R.layout.item, data);
     }
 
     private void insertmenuRecord() {
         EditText name = (EditText) findViewById(R.id.menuName);
         EditText price = (EditText) findViewById(R.id.menuPrice);
         EditText explanation = (EditText) findViewById(R.id.menuExplanation);
-        Intent intent = getIntent();
-        String rName = intent.getStringExtra("resName");
 
         mDbHelper.insertMenuByMethod(name.getText().toString(), price.getText().toString(), explanation.getText().toString(), mPhotoFileName, rName);
     }

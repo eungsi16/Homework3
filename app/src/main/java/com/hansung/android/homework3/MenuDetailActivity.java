@@ -21,14 +21,13 @@ import java.io.File;
 //안드로이드 6주차 강의자료를 활용하였습니다.
 
 public class MenuDetailActivity extends AppCompatActivity {
-   // @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
     static String mImage;
     static String mName;
     static String mPrice;
     static String mEx;
 
-   // @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +37,16 @@ public class MenuDetailActivity extends AppCompatActivity {
                 == Configuration.ORIENTATION_LANDSCAPE) {
             finish();
             return;
+        }
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            Drawable drawable = getDrawable(R.drawable.ic_keyboard_arrow_left_black_24dp);
+            if (drawable != null) {
+                drawable.setTint(Color.WHITE);
+                actionBar.setHomeAsUpIndicator(drawable);
+            }
         }
 
         Intent intent = getIntent();
