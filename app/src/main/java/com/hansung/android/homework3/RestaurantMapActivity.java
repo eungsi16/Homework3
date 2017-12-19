@@ -77,64 +77,48 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
-                if (mgoogleMap != null) {
+
+
                     editText = (EditText) findViewById(R.id.edit);
                     ed = editText.getText().toString();
-                    getAddress();
-                    LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
+                    cursor = mDBHelper.getAllLocationsBySQL();
+                    String rName;
+                    double rLatitude;
+                    double rLongitude;
+                    cursor.moveToFirst();
+                    while (cursor.moveToNext()) {
+                        //맛집이름 검색시 해당 맛집 지도표시
+                        rName = cursor.getString(1);
+                        if (rName.equals(ed)) {
+                            rLatitude = cursor.getDouble(2);
+                            rLongitude = cursor.getDouble(3);
 
-                    mgoogleMap.addMarker(
-                            new MarkerOptions().
-                                    position(location)
-                    );
-                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                            LatLng location = new LatLng(rLatitude, rLongitude);
 
-=======
->>>>>>> 18da10acb23f009a484c62e35492638a5b289ad1
-                editText = (EditText) findViewById(R.id.edit);
-                ed = editText.getText().toString();
-                cursor = mDBHelper.getAllLocationsBySQL();
-                String rName;
-                double rLatitude;
-                double rLongitude;
-                cursor.moveToFirst();
-                while (cursor.moveToNext()) {
-                    //맛집이름 검색시 해당 맛집 지도표시
-                    rName = cursor.getString(1);
-                    if (rName.equals(ed)) {
-                        rLatitude = cursor.getDouble(2);
-                        rLongitude = cursor.getDouble(3);
+                            mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                            break;
+                        } else if (mgoogleMap != null) {
 
-                        LatLng location = new LatLng(rLatitude, rLongitude);
+                            getAddress();
+                            LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
 
-                        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-                        break;
+                            mgoogleMap.addMarker(
+                                    new MarkerOptions().
+                                            position(location)
+                            );
+                            mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+
+
+                        }
                     }
-                    else if(mgoogleMap != null)
-                    {
 
-                        getAddress();
-                        LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
-
-                        mgoogleMap.addMarker(
-                                new MarkerOptions().
-                                        position(location)
-                        );
-                        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-
-                    }
-<<<<<<< HEAD
-
-=======
->>>>>>> 18da10acb23f009a484c62e35492638a5b289ad1
                 }
+            });
+        }
 
-            }
-        });
 
 
-    }
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
