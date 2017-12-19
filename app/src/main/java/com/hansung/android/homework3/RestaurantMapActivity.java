@@ -83,7 +83,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 ed = editText.getText().toString();
                 cursor = mDBHelper.getAllLocationsBySQL();
 
-                //등록된 맛집이 없을 경우
+                //등록된 맛집이 있을 경우
                 if (cursor.moveToFirst()) {
                     String rName;
                     double rLatitude;
@@ -102,7 +102,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                     }
                 }
 
-                //등록된 맛집이 있을 경우
+                //등록된 맛집이 없을 경우
                 else if (mgoogleMap != null) {
 
                     getAddress();
@@ -306,12 +306,9 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void showDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                this);
-
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         // 제목셋팅
         alertDialogBuilder.setTitle("맛집 등록");
-
         // AlertDialog 셋팅
         alertDialogBuilder
                 .setMessage("새로운 맛집을 등록하시겠습니까?")
@@ -335,7 +332,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                                 dialog.cancel();
                             }
                         });
-
         //다이얼로그 보여주기
         alertDialogBuilder.show();
 
@@ -349,17 +345,12 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
             cursor = mDBHelper.getAllLocationsBySQL();
             //맛집마커 클릭시
             if (marker.getTitle() != null) {
-
                 if (cursor.moveToFirst()) {
-
                     double rlatitude;
                     double rIongitude;
-
                     while (cursor.moveToNext()) {
-
                         rlatitude = cursor.getDouble(2);
                         rIongitude = cursor.getDouble(3);
-
                         if (marker.getPosition().latitude == rlatitude && marker.getPosition().longitude == rIongitude) {
                             String rname = marker.getTitle();
                             Intent intent = new Intent(getApplicationContext(), RestaurantDetailActivity.class);
