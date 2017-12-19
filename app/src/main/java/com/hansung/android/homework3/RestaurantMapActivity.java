@@ -50,6 +50,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     private Location mLastLocation;
     private GoogleMap mgoogleMap;
     private DBHelper mDBHelper;
+    static String resname;
     Address address;
     EditText editText;
     String ed;
@@ -76,19 +77,40 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mgoogleMap != null) {
-                    editText = (EditText) findViewById(R.id.edit);
-                    ed = editText.getText().toString();
-                    getAddress();
-                    LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
+                editText = (EditText) findViewById(R.id.edit);
+                ed = editText.getText().toString();
+                cursor = mDBHelper.getAllLocationsBySQL();
+                String rName;
+                double rLatitude;
+                double rLongitude;
+                cursor.moveToFirst();
+                while (cursor.moveToNext()) {
+                //맛집이름 검색시 해당 맛집 지도표시
+                    rName = cursor.getString(1);
+                    if (rName.equals(ed)) {
+                                rLatitude = cursor.getDouble(2);
+                                rLongitude = cursor.getDouble(3);
 
-                    mgoogleMap.addMarker(
-                            new MarkerOptions().
-                                    position(location)
-                    );
-                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                                LatLng location = new LatLng(rLatitude, rLongitude);
 
+                        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                        break;
+                    }
+                    else if(mgoogleMap != null)
+                    {
+
+                        getAddress();
+                        LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
+
+                        mgoogleMap.addMarker(
+                                new MarkerOptions().
+                                        position(location)
+                        );
+                        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+
+                    }
                 }
+
             }
         });
 
