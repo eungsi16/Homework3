@@ -47,7 +47,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     private FusedLocationProviderClient mFusedLocationClient;
     final private int REQUEST_PERMISSIONS_FOR_LAST_KNOWN_LOCATION = 100;
     final private int REQUEST_PERMISSIONS_FOR_LOCATION_UPDATES = 101;
-    final String TAG = "MapTest";
     private Location mLastLocation;
     private GoogleMap mgoogleMap;
     private DBHelper mDBHelper;
@@ -84,6 +83,18 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 ed = editText.getText().toString();
                 cursor = mDBHelper.getAllLocationsBySQL();
 
+                //등록된 맛집이 없을 경우
+                if (mgoogleMap != null) {
+
+                    getAddress();
+                    LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
+
+                    mgoogleMap.addMarker(
+                            new MarkerOptions().
+                                    position(location)
+                    );
+                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                }
 
                 //등록된 맛집이 있을 경우
                 if (cursor.moveToFirst()) {
@@ -100,23 +111,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                             LatLng location = new LatLng(rLatitude, rLongitude);
 
                             mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-                            break;
                         }
                     }
-                }
-                //등록된 맛집이 없을 경우
-                else if (mgoogleMap != null) {
-
-                    getAddress();
-                    LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
-
-                    mgoogleMap.addMarker(
-                            new MarkerOptions().
-                                    position(location)
-                    );
-                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-                } else {
-                    Log.i(TAG, "No address found");
                 }
             }
         });
