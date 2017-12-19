@@ -84,19 +84,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 cursor = mDBHelper.getAllLocationsBySQL();
 
                 //등록된 맛집이 없을 경우
-                if (mgoogleMap != null) {
-
-                    getAddress();
-                    LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
-
-                    mgoogleMap.addMarker(
-                            new MarkerOptions().
-                                    position(location)
-                    );
-                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-                }
-
-                //등록된 맛집이 있을 경우
                 if (cursor.moveToFirst()) {
                     String rName;
                     double rLatitude;
@@ -114,6 +101,20 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                         }
                     }
                 }
+
+                //등록된 맛집이 있을 경우
+                else if (mgoogleMap != null) {
+
+                    getAddress();
+                    LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
+
+                    mgoogleMap.addMarker(
+                            new MarkerOptions().
+                                    position(location)
+                    );
+                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                }
+
             }
         });
     }
