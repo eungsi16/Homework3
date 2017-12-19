@@ -87,7 +87,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                                     position(location)
                     );
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-
                 }
             }
         });
