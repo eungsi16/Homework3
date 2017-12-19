@@ -77,6 +77,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
                 if (mgoogleMap != null) {
                     editText = (EditText) findViewById(R.id.edit);
                     ed = editText.getText().toString();
@@ -89,6 +90,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                     );
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
 
+=======
+>>>>>>> 18da10acb23f009a484c62e35492638a5b289ad1
                 editText = (EditText) findViewById(R.id.edit);
                 ed = editText.getText().toString();
                 cursor = mDBHelper.getAllLocationsBySQL();
@@ -97,13 +100,13 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 double rLongitude;
                 cursor.moveToFirst();
                 while (cursor.moveToNext()) {
-                //맛집이름 검색시 해당 맛집 지도표시
+                    //맛집이름 검색시 해당 맛집 지도표시
                     rName = cursor.getString(1);
                     if (rName.equals(ed)) {
-                                rLatitude = cursor.getDouble(2);
-                                rLongitude = cursor.getDouble(3);
+                        rLatitude = cursor.getDouble(2);
+                        rLongitude = cursor.getDouble(3);
 
-                                LatLng location = new LatLng(rLatitude, rLongitude);
+                        LatLng location = new LatLng(rLatitude, rLongitude);
 
                         mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
                         break;
@@ -121,7 +124,10 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                         mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
 
                     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 18da10acb23f009a484c62e35492638a5b289ad1
                 }
 
             }
@@ -135,16 +141,67 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         inflater.inflate(R.menu.map_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    //메뉴아이템 클릭 시, MenuRegistrationActivity 불려짐
+    //메뉴아이템 클릭 시, 현재위치 불러옴
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nlocation:
                 getLastLocation();
                 return true;
+            case R.id.nlocation1:
+                getkm(1000);
+                return true;
+            case R.id.nlocation2:
+                getkm(2000);
+                return true;
+            case R.id.nlocation3:
+                getkm(3000);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void getkm(int km){
+        mgoogleMap.clear();
+
+        getLastLocation();
+        double distance;
+
+        Location locationA = new Location("point A");
+
+        locationA.setLatitude(klatitude);
+        locationA.setLongitude(klongitude);
+
+        cursor = mDBHelper.getAllLocationsBySQL();
+        String rName;
+        double rLatitude;
+        double rLongitude;
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            rName = cursor.getString(1);
+            rLatitude = cursor.getDouble(2);
+            rLongitude = cursor.getDouble(3);
+
+            Location locationB = new Location("point B");
+            locationB.setLatitude(rLatitude);
+            locationB.setLongitude(rLongitude);
+            distance = locationA.distanceTo(locationB);
+            if(distance<km){
+                LatLng location = new LatLng(rLatitude, rLongitude);
+                mgoogleMap.addMarker(
+                        new MarkerOptions().
+                                position(location).
+                                title(rName).
+                                icon(BitmapDescriptorFactory.fromResource(R.drawable.map_mark_iloveimg_resized))
+                );
+                mgoogleMap.setOnMarkerClickListener(new MyMarkerClickListener());
+
+            }
+
+        }
+
+//http://sunmo.blogspot.kr/2010/12/
     }
 
     private boolean checkLocationPermissions() {
@@ -184,6 +241,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         }
     }
 
+    double klatitude;
+    double klongitude;
     @SuppressWarnings("MissingPermission")
     private void getLastLocation() {
         Task task = mFusedLocationClient.getLastLocation();
@@ -195,6 +254,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 if (location != null) {
                     mLastLocation = location;
                     LatLng Location = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                    klatitude = mLastLocation.getLatitude();
+                    klongitude=mLastLocation.getLongitude();
 
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location, 15));
 
@@ -204,6 +265,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
             }
         });
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
