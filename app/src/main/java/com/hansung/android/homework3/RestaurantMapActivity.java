@@ -77,7 +77,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
                 if (mgoogleMap != null) {
                     editText = (EditText) findViewById(R.id.edit);
                     ed = editText.getText().toString();
@@ -89,7 +88,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                                     position(location)
                     );
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-=======
+
                 editText = (EditText) findViewById(R.id.edit);
                 ed = editText.getText().toString();
                 cursor = mDBHelper.getAllLocationsBySQL();
@@ -122,7 +121,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                         mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
 
                     }
->>>>>>> 8e3ea112fe7f927649b002f64cc3996fdd232cfa
+
                 }
 
             }
