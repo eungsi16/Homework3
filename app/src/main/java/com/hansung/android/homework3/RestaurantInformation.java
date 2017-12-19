@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 
 public class RestaurantInformation {
 
-    public static final String DB_NAME = "Restaurant_TEST3.db";
+    public static final String DB_NAME = "Restaurant_DB.db";
     public static final int DATABASE_VERSION = 1;
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";

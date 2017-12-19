@@ -47,6 +47,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     private FusedLocationProviderClient mFusedLocationClient;
     final private int REQUEST_PERMISSIONS_FOR_LAST_KNOWN_LOCATION = 100;
     final private int REQUEST_PERMISSIONS_FOR_LOCATION_UPDATES = 101;
+    final String TAG = "MapTest";
     private Location mLastLocation;
     private GoogleMap mgoogleMap;
     private DBHelper mDBHelper;
@@ -55,6 +56,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     EditText editText;
     String ed;
     Cursor cursor;
+
+
 
 
     @Override
@@ -77,15 +80,16 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                editText = (EditText) findViewById(R.id.edit);
+                ed = editText.getText().toString();
+                cursor = mDBHelper.getAllLocationsBySQL();
 
 
-                    editText = (EditText) findViewById(R.id.edit);
-                    ed = editText.getText().toString();
-                    cursor = mDBHelper.getAllLocationsBySQL();
+                //등록된 맛집이 있을 경우
+                if (cursor.moveToFirst()) {
                     String rName;
                     double rLatitude;
                     double rLongitude;
-                    cursor.moveToFirst();
                     while (cursor.moveToNext()) {
                         //맛집이름 검색시 해당 맛집 지도표시
                         rName = cursor.getString(1);
@@ -97,24 +101,26 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 
                             mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
                             break;
-                        } else if (mgoogleMap != null) {
-
-                            getAddress();
-                            LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
-
-                            mgoogleMap.addMarker(
-                                    new MarkerOptions().
-                                            position(location)
-                            );
-                            mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-
-
                         }
                     }
-
                 }
-            });
-        }
+                //등록된 맛집이 없을 경우
+                else if (mgoogleMap != null) {
+
+                    getAddress();
+                    LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
+
+                    mgoogleMap.addMarker(
+                            new MarkerOptions().
+                                    position(location)
+                    );
+                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                } else {
+                    Log.i(TAG, "No address found");
+                }
+            }
+        });
+    }
 
 
 
