@@ -79,6 +79,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                a=false;
                 editText = (EditText) findViewById(R.id.edit);
                 ed = editText.getText().toString();
                 cursor = mDBHelper.getAllLocationsBySQL();
@@ -96,6 +97,10 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                             rLongitude = cursor.getDouble(3);
 
                             LatLng location = new LatLng(rLatitude, rLongitude);
+                            mgoogleMap.addMarker(
+                                    new MarkerOptions().
+                                            position(location)
+                            );
 
                             mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
                             return;
@@ -133,11 +138,12 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         return super.onCreateOptionsMenu(menu);
     }
     //메뉴아이템 클릭 시, 현재위치 불러옴
-
+public boolean a=false;
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nlocation:
                 getLastLocation();
+                a=true;
                 return true;
             case R.id.nlocation1:
                 getkm(1000);
@@ -155,14 +161,20 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 
     public void getkm(int km){
         mgoogleMap.clear();
-
-        getLastLocation();
         double distance;
-
         Location locationA = new Location("point A");
+        if(a==true){
+            getLastLocation();
+            locationA.setLatitude(klatitude);
+            locationA.setLongitude(klongitude);
+        }
+        else{
+            getAddress();
+            locationA.setLatitude(address.getLatitude());
+            locationA.setLongitude(address.getLongitude());
+        }
 
-        locationA.setLatitude(klatitude);
-        locationA.setLongitude(klongitude);
+
 
         cursor = mDBHelper.getAllLocationsBySQL();
         String rName;
