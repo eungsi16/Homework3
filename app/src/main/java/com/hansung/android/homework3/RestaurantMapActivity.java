@@ -98,12 +98,14 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                             LatLng location = new LatLng(rLatitude, rLongitude);
 
                             mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                            return;
                         }
                     }
+
                 }
 
                 //등록된 맛집이 없을 경우
-                else if (mgoogleMap != null) {
+                if (mgoogleMap != null) {
 
                     getAddress();
                     LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
@@ -113,7 +115,9 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                                     position(location)
                     );
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+
                 }
+
 
             }
         });
